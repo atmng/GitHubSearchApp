@@ -1,9 +1,11 @@
 package com.atmng.githubsearchapp.ui.search_user
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.atmng.githubsearchapp.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchUserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
