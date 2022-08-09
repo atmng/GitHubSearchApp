@@ -6,13 +6,13 @@ data class UserSearchResponse(
 )
 
 data class User(
-    val login: String,
-    val id: Int,
-    val avatarUrl: String,
-    val gravatarId: String?,
-    val url: String,
-    val name: String?,
-    val followers: Int,
-    val following: Int
+    val login: String = "",
+    val id: Int = 0,
+    val avatarUrl: String = "",
+    val gravatarId: String? = null,
+    val name: String? = null,
+    val followers: Int = 0,
+    val following: Int = 0,
+    val bio: String? = null,
 )
 
