@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -18,8 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.atmng.githubsearchapp.R
 import com.atmng.githubsearchapp.ui.search_user.component.SearchBar
+import com.atmng.githubsearchapp.ui.search_user.component.UserItem
 import com.atmng.githubsearchapp.ui.theme.GitHubSearchAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,36 +46,44 @@ class SearchUserFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 GitHubSearchAppTheme {
-                    SearchUserScreen()
+                    SearchUserScreen(
+                        viewModel = viewModel
+                    )
                 }
             }
         }
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.searchUser("test")
-    }
 }
 
 @Composable
-fun SearchUserScreen() {
+fun SearchUserScreen(
+    viewModel: SearchUserViewModel = viewModel(),
+) {
     Scaffold(
         topBar = {
             TopAppBar({ Text(stringResource(R.string.search_user_title)) })
         }
     ) { innerPadding ->
-        LazyColumn(modifier = Modifier
-            .padding(innerPadding)
-            .padding(16.dp)) {
-            item {
-                SearchBar(onSearch = {})
+        Column(Modifier.padding(innerPadding)) {
+            SearchBar(
+                modifier = Modifier.padding(16.dp),
+                onSearch = { query ->
+                    viewModel.searchUser(query)
+                }
+            )
+            LazyColumn {
+                items(viewModel.uiState.displayUsers) { item ->
+                    UserItem(
+                        user = item,
+                        onClick = {
+                            // TODO navigate user page
+                        }
+                    )
+                }
             }
         }
-
     }
 }
-
 
 @Preview
 @Composable

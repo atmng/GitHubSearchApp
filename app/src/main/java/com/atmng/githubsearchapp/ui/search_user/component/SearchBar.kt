@@ -1,7 +1,6 @@
 package com.atmng.githubsearchapp.ui.search_user.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TextField
@@ -18,14 +17,16 @@ import com.atmng.githubsearchapp.ui.theme.GitHubSearchAppTheme
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
-    onSearch: (KeyboardActionScope.() -> Unit)?,
+    onSearch: ((String) -> Unit),
 ) {
     var text by remember { mutableStateOf("") }
     TextField(
         modifier = modifier.fillMaxWidth(),
         value = text,
         onValueChange = { text = it },
-        keyboardActions = KeyboardActions(onSearch = onSearch),
+        keyboardActions = KeyboardActions(
+            onSearch = { onSearch(text) }
+        ),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search)
     )
 }
