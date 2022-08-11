@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.fragment.NavHostFragment
 import com.atmng.githubsearchapp.R
+import com.atmng.githubsearchapp.model.User
 import com.atmng.githubsearchapp.ui.search_user.component.SearchBar
 import com.atmng.githubsearchapp.ui.search_user.component.UserItem
 import com.atmng.githubsearchapp.ui.theme.GitHubSearchAppTheme
@@ -29,10 +31,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchUserFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SearchUserFragment()
-    }
 
     private val viewModel by viewModels<SearchUserViewModel>()
 
@@ -47,17 +45,29 @@ class SearchUserFragment : Fragment() {
             setContent {
                 GitHubSearchAppTheme {
                     SearchUserScreen(
-                        viewModel = viewModel
+                        viewModel = viewModel,
+                        onClick = {
+                            startDetailScreen(it.login)
+                        }
                     )
                 }
             }
         }
+    }
+
+    private fun startDetailScreen(userLogin: String) {
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val action = SearchUserFragmentDirections.actionSearchUserFragmentToUserDetailFragment(userLogin = userLogin)
+        navController.navigate(action)
     }
 }
 
 @Composable
 fun SearchUserScreen(
     viewModel: SearchUserViewModel = viewModel(),
+    onClick: (User) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -75,9 +85,7 @@ fun SearchUserScreen(
                 items(viewModel.uiState.displayUsers) { item ->
                     UserItem(
                         user = item,
-                        onClick = {
-                            // TODO navigate user page
-                        }
+                        onClick = { onClick(item) }
                     )
                 }
             }
@@ -89,6 +97,8 @@ fun SearchUserScreen(
 @Composable
 fun SearchUserScreenPreview() {
     GitHubSearchAppTheme {
-        SearchUserScreen()
+        SearchUserScreen(
+            onClick = {}
+        )
     }
 }
