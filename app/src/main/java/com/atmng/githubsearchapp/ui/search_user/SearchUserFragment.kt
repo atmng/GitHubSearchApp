@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -82,11 +84,14 @@ fun SearchUserScreen(
                 }
             )
             LazyColumn {
-                items(viewModel.uiState.displayUsers) { item ->
+                itemsIndexed(viewModel.uiState.displayUsers) { index, item ->
                     UserItem(
                         user = item,
                         onClick = { onClick(item) }
                     )
+                    if(index < viewModel.uiState.displayUsers.lastIndex){
+                        Divider()
+                    }
                 }
             }
         }

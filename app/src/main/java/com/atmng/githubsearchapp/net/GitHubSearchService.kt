@@ -1,5 +1,6 @@
 package com.atmng.githubsearchapp.net
 
+import com.atmng.githubsearchapp.model.Repository
 import com.atmng.githubsearchapp.model.User
 import com.atmng.githubsearchapp.model.UserSearchResponse
 import retrofit2.Response
@@ -18,4 +19,9 @@ interface GitHubSearchService {
     suspend fun getUser(
         @Path("user_name") userName: String
     ): Response<User>
+
+    @GET("/users/{user_name}/repos")
+    suspend fun getRepositories(
+        @Path("user_name") userName: String,
+    ): Response<List<Repository>>
 }

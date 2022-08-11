@@ -31,3 +31,8 @@ suspend fun <V> ApiResult<V>.onFailure(block: suspend (value: ApiResult.Failure<
     if (this is ApiResult.Failure) block(this)
     return this
 }
+
+fun <V> ApiResult<V>.getValue(): V? {
+    return if (this is ApiResult.Success) data
+    else null
+}
