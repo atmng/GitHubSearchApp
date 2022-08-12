@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -20,6 +22,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -85,6 +88,9 @@ private fun UserDetailScreen(
             if (viewModel.uiState.displayUser != null) {
                 item {
                     UserHeader(viewModel.uiState.displayUser!!)
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
                 itemsIndexed(viewModel.uiState.displayRepos) { index, repo ->
                     RepositoryItem(
