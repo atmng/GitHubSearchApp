@@ -1,18 +1,23 @@
 package com.atmng.githubsearchapp.ui.user_detail
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
@@ -23,6 +28,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.navArgs
 import com.atmng.githubsearchapp.R
 import com.atmng.githubsearchapp.ui.theme.GitHubSearchAppTheme
+import com.atmng.githubsearchapp.ui.theme.Purple200
+import com.atmng.githubsearchapp.ui.theme.Purple500
 import com.atmng.githubsearchapp.ui.user_detail.component.RepositoryItem
 import com.atmng.githubsearchapp.ui.user_detail.component.UserHeader
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +51,7 @@ class UserDetailFragment : Fragment() {
                 GitHubSearchAppTheme {
                     UserDetailScreen(
                         viewModel = viewModel,
+                        onClickRepository = { url -> openBrowser(url) }
                     )
                 }
             }
@@ -54,11 +62,22 @@ class UserDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadContent(args.userLogin)
     }
+
+    private fun openBrowser(url: String) {
+        val params = CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(Purple500.toArgb())
+            .build()
+        val intent = CustomTabsIntent.Builder()
+            .setDefaultColorSchemeParams(params)
+            .build()
+        intent.launchUrl(requireContext(), Uri.parse(url))
+    }
 }
 
 @Composable
 private fun UserDetailScreen(
     viewModel: UserDetailViewModel = viewModel(),
+    onClickRepository: (String) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -73,15 +92,13 @@ private fun UserDetailScreen(
                 itemsIndexed(viewModel.uiState.displayRepos) { index, repo ->
                     RepositoryItem(
                         repository = repo,
-                        onClick = {
-                        }
+                        onClick = { onClickRepository(repo.url) }
                     )
                     if (index < viewModel.uiState.displayRepos.lastIndex) {
                         Divider()
                     }
                 }
             }
-
         }
     }
 }
@@ -90,6 +107,8 @@ private fun UserDetailScreen(
 @Composable
 fun UserDetailScreenPreview() {
     GitHubSearchAppTheme {
-        UserDetailScreen()
+        UserDetailScreen(
+            onClickRepository = {}
+        )
     }
 }

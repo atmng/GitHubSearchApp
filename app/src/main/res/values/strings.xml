@@ -4,4 +4,5 @@
     <string name="user_detail_title">User</string>
     <string name="user_detail_following">%d following</string>
     <string name="user_detail_followers">%d followers</string>
+    <string name="user_detail_stars">%d stars</string>
 </resources>
