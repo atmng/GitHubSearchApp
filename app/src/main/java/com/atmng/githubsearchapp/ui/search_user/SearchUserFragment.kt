@@ -13,8 +13,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,11 +68,13 @@ class SearchUserFragment : Fragment() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchUserScreen(
     viewModel: SearchUserViewModel = viewModel(),
     onClick: (User) -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
         topBar = {
             TopAppBar({ Text(stringResource(R.string.search_user_title)) })
@@ -81,6 +85,7 @@ fun SearchUserScreen(
                 modifier = Modifier.padding(16.dp),
                 onSearch = { query ->
                     viewModel.searchUser(query)
+                    keyboardController?.hide()
                 }
             )
             if (viewModel.uiState.loading) {
