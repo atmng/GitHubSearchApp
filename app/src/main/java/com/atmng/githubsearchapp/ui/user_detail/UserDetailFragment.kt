@@ -10,8 +10,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -28,7 +26,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.navArgs
 import com.atmng.githubsearchapp.R
 import com.atmng.githubsearchapp.ui.theme.GitHubSearchAppTheme
-import com.atmng.githubsearchapp.ui.theme.Purple200
 import com.atmng.githubsearchapp.ui.theme.Purple500
 import com.atmng.githubsearchapp.ui.user_detail.component.RepositoryItem
 import com.atmng.githubsearchapp.ui.user_detail.component.UserHeader
@@ -94,9 +91,6 @@ private fun UserDetailScreen(
                         repository = repo,
                         onClick = { onClickRepository(repo.url) }
                     )
-                    if (index < viewModel.uiState.displayRepos.lastIndex) {
-                        Divider()
-                    }
                 }
             }
         }

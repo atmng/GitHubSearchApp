@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +30,7 @@ fun UserHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 8.dp, end = 16.dp),
+            .padding(16.dp),
     ) {
         Image(
             modifier = Modifier
@@ -45,16 +46,16 @@ fun UserHeader(
             if (!user.name.isNullOrEmpty()) {
                 Text(
                     text = user.name,
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.h4
                 )
             }
             Text(
                 text = user.login,
-                style = MaterialTheme.typography.subtitle1
+                color = Color.DarkGray
             )
-            Row {
+            Row(modifier = Modifier.padding(top = 8.dp)) {
                 Text(stringResource(id = R.string.user_detail_following, user.following))
-                Spacer(modifier = Modifier.size(8.dp))
+                Spacer(modifier = Modifier.size(16.dp))
                 Text(stringResource(id = R.string.user_detail_followers, user.followers))
             }
         }
