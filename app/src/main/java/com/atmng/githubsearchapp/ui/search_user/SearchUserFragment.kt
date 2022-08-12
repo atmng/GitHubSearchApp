@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
@@ -26,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.NavHostFragment
 import com.atmng.githubsearchapp.R
 import com.atmng.githubsearchapp.model.User
+import com.atmng.githubsearchapp.ui.search_user.component.LoadingScreen
 import com.atmng.githubsearchapp.ui.search_user.component.SearchBar
 import com.atmng.githubsearchapp.ui.search_user.component.UserItem
 import com.atmng.githubsearchapp.ui.theme.GitHubSearchAppTheme
@@ -83,14 +83,18 @@ fun SearchUserScreen(
                     viewModel.searchUser(query)
                 }
             )
-            LazyColumn {
-                itemsIndexed(viewModel.uiState.displayUsers) { index, item ->
-                    UserItem(
-                        user = item,
-                        onClick = { onClick(item) }
-                    )
-                    if(index < viewModel.uiState.displayUsers.lastIndex){
-                        Divider()
+            if (viewModel.uiState.loading) {
+                LoadingScreen()
+            } else {
+                LazyColumn {
+                    itemsIndexed(viewModel.uiState.displayUsers) { index, item ->
+                        UserItem(
+                            user = item,
+                            onClick = { onClick(item) }
+                        )
+                        if (index < viewModel.uiState.displayUsers.lastIndex) {
+                            Divider()
+                        }
                     }
                 }
             }

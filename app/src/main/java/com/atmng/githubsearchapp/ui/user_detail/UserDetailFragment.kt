@@ -28,6 +28,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.navArgs
 import com.atmng.githubsearchapp.R
+import com.atmng.githubsearchapp.ui.search_user.component.LoadingScreen
 import com.atmng.githubsearchapp.ui.theme.GitHubSearchAppTheme
 import com.atmng.githubsearchapp.ui.theme.Purple500
 import com.atmng.githubsearchapp.ui.user_detail.component.RepositoryItem
@@ -84,19 +85,23 @@ private fun UserDetailScreen(
             TopAppBar({ Text(stringResource(R.string.user_detail_title)) })
         }
     ) { innerPadding ->
-        LazyColumn(Modifier.padding(innerPadding)) {
-            if (viewModel.uiState.displayUser != null) {
-                item {
-                    UserHeader(viewModel.uiState.displayUser!!)
-                }
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-                itemsIndexed(viewModel.uiState.displayRepos) { index, repo ->
-                    RepositoryItem(
-                        repository = repo,
-                        onClick = { onClickRepository(repo.url) }
-                    )
+        if (viewModel.uiState.loading) {
+            LoadingScreen()
+        } else {
+            LazyColumn(Modifier.padding(innerPadding)) {
+                if (viewModel.uiState.displayUser != null) {
+                    item {
+                        UserHeader(viewModel.uiState.displayUser!!)
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                    itemsIndexed(viewModel.uiState.displayRepos) { index, repo ->
+                        RepositoryItem(
+                            repository = repo,
+                            onClick = { onClickRepository(repo.url) }
+                        )
+                    }
                 }
             }
         }
