@@ -35,7 +35,9 @@ class UserDetailViewModel @Inject constructor(
     }
 
     private suspend fun getRepositories(userLogin: String): List<Repository> {
-        return searchUserRepository.getRepositories(userLogin).getValue()
+        return searchUserRepository.getRepositories(userLogin)
+            .getValue()
+            ?.filterNot { it.fork }
             ?: emptyList()
     }
 }

@@ -8,4 +8,5 @@ data class Repository(
     val language: String? = null,
     @SerializedName("stargazers_count") val starCount: Int = 0,
     @SerializedName("html_url") val url: String = "",
+    val fork: Boolean = false,
 )
